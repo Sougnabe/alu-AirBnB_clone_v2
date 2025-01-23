@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
-
+from datetime import datetime
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
@@ -18,6 +18,9 @@ class FileStorage:
 
     def save(self):
         """Saves storage dictionary to file"""
+        for obj in FileStorage.__objects.values():
+            obj.updated_at = datetime.now()
+
         with open(FileStorage.__file_path, 'w') as f:
             temp = {}
             temp.update(FileStorage.__objects)
