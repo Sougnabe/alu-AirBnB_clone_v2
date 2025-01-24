@@ -140,3 +140,49 @@ Usage: <class_name>.update(<_id>, <dictionary>)
 (hbnb) ["[User] (98bea5de-9cb0-4d78-8a9d-c4de03521c30) {'updated_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134362), 'name': 'Fred the Frog', 'age': 9, 'id': '98bea5de-9cb0-4d78-8a9d-c4de03521c30', 'created_at': datetime.datetime(2020, 2, 19, 21, 47, 29, 134343)}"]
 ```
 <br>
+
+##### setup_mysql_dev.sql
+This script is designed to prepare a MySQL server for the development of the project by automating the setup of a dedicated database and user with appropriate privileges. The script performs the following tasks:
+
+Database Creation
+It creates a development database named hbnb_dev_db. If the database already exists, the script ensures it does not fail by using the IF NOT EXISTS clause.
+
+User Creation
+It creates a new MySQL user, hbnb_dev, with the password hbnb_dev_pwd. If the user already exists, the script does not attempt to recreate it.
+
+Granting Privileges
+
+The user hbnb_dev is granted all privileges on the database hbnb_dev_db, ensuring full access for development purposes.
+Additionally, the user is granted SELECT privileges on the database performance_schema, allowing access to performance-related data.
+Privileges Application
+The script uses FLUSH PRIVILEGES to apply the changes and ensure the new privileges take effect immediately.
+
+This script ensures a robust and consistent environment for database development while adhering to best practices by minimizing privilege scopes where possible.
+
+###### setup_mysql_test.sql
+This script sets up a MySQL server for the project by creating and configuring a testing database and user. It performs the following actions:
+
+Database Creation: Creates a new database named hbnb_test_db if it doesn't already exist.
+
+sql
+Copy
+Edit
+CREATE DATABASE IF NOT EXISTS hbnb_test_db;
+User Creation: Creates a new user hbnb_test with the password hbnb_test_pwd if the user doesn't exist.
+
+sql
+Copy
+Edit
+CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost' IDENTIFIED BY 'hbnb_test_pwd';
+Granting Privileges:
+
+Grants SELECT privileges on the performance_schema database to the hbnb_test user.
+Grants all privileges on the hbnb_test_db database to the hbnb_test user.
+sql
+Copy
+Edit
+GRANT SELECT ON performance_schema.* TO 'hbnb_test'@'localhost';
+GRANT ALL PRIVILEGES ON hbnb_test_db.* TO 'hbnb_test'@'localhost';
+Finalizing Changes: Executes FLUSH PRIVILEGES to apply all the changes.
+
+This script ensures the MySQL server is prepared with the required database and user configurations to support the project.
