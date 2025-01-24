@@ -200,41 +200,40 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-    # Split args to extract the class name and parameters
         args = args.split()
         class_name = args[0]
         if class_name not in self.classes:
             print("** class doesn't exist **")
             return
 
-    # Create an instance of the class
+
         new_instance = self.classes[class_name]()
 
-    # Process parameters (key=value pairs)
+
         for param in args[1:]:
             if "=" not in param:
                 continue
             key, value = param.split('=', 1)
-            
+
             if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1]  # Remove surrounding quotes
-                value = value.replace('_', ' ').replace('\\"', '"')  # Handle spaces and escaped quote
+                value = value[1:-1]  
+                value = value.replace('_', ' ').replace('\\"', '"')
             elif '.' in value:
                 try:
                     value = float(value)
                 except ValueError:
                     continue
-            else:  # Handle integers
+            else:
                 try:
                     value = int(value)
                 except ValueError:
                     continue
 
-        # Set attribute if it exists in the class
+
             if hasattr(new_instance, key):
                 setattr(new_instance, key, value)
 
-    # Save the new instance
+
         new_instance.save()
         print(new_instance.id)
 
