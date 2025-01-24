@@ -157,44 +157,87 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        if len(args) < 1:
+        # """ Create an object of any class"""
+        # if len(args) < 1:
+        #     print("** class name missing **")
+        #     return
+        # # convert the args to a list
+        # args = args.split()
+
+        # # the 1st element of the list is the class name
+        # class_name = args[0]
+
+        # if class_name not in self.classes:
+        #     print("** class doesn't exist **")
+        #     return
+        # new_instance = self.classes[class_name]()
+        # for params in args[1:]:
+        #     if "=" not in params:
+        #         continue
+        #     key, value = params.split('=')
+        #     value = value.replace('_', ' ')
+        #     if value.startswith('"') and value.endswith('"'):
+        #         value = value[1:-1].replace('\\"', '"')
+        #     elif '.' in value:
+        #         try:
+        #             value = float(value)
+        #         except ValueError:
+        #             continue
+        #     else:
+        #         try:
+        #             value = int(value)
+        #         except ValueError:
+        #             continue
+
+        #     if value is not None and value != "" and hasattr(
+        #             new_instance, key):
+        #         setattr(new_instance, key, value)
+
+        # print(new_instance.id)
+        # new_instance.save()
+        """ Create an object of any class with given parameters """
+        if not args:
             print("** class name missing **")
             return
-        # convert the args to a list
+
+    # Split args to extract the class name and parameters
         args = args.split()
-
-        # the 1st element of the list is the class name
         class_name = args[0]
-
         if class_name not in self.classes:
             print("** class doesn't exist **")
             return
-        new_instance = self.classes[class_name]()
-        for params in args[1:]:
-            if "=" not in params:
+
+    # Create an instance of the class
+    new_instance = self.classes[class_name]()
+
+    # Process parameters (key=value pairs)
+    for param in args[1:]:
+        if "=" not in param:
+            continue
+        key, value = param.split('=', 1)
+
+        # Handle string values
+        if value.startswith('"') and value.endswith('"'):
+            value = value[1:-1]  # Remove surrounding quotes
+            value = value.replace('_', ' ').replace('\\"', '"')  # Handle spaces and escaped quotes
+        elif '.' in value:  # Handle floats
+            try:
+                value = float(value)
+            except ValueError:
                 continue
-            key, value = params.split('=')
-            value = value.replace('_', ' ')
-            if value.startswith('"') and value.endswith('"'):
-                value = value[1:-1].replace('\\"', '"')
-            elif '.' in value:
-                try:
-                    value = float(value)
-                except ValueError:
-                    continue
-            else:
-                try:
-                    value = int(value)
-                except ValueError:
-                    continue
+        else:  # Handle integers
+            try:
+                value = int(value)
+            except ValueError:
+                continue
 
-            if value is not None and value != "" and hasattr(
-                    new_instance, key):
-                setattr(new_instance, key, value)
+        # Set attribute if it exists in the class
+        if hasattr(new_instance, key):
+            setattr(new_instance, key, value)
 
-        print(new_instance.id)
-        new_instance.save()
+    # Save the new instance
+    new_instance.save()
+    print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
